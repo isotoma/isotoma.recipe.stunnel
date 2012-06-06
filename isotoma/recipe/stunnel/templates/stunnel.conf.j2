@@ -1,28 +1,31 @@
 
-cert = {{ cert }}
-{% if ca %}
-CApath = {{ ca }}
+cert = {{ opts.cert }}
+{% if opts.ca %}
+CApath = {{ opts.ca }}
 {% endif %}
-key = {{ key }}
+key = {{ opts.key }}
 
 
 ; Protocol version (all, SSLv2, SSLv3, TLSv1)
 sslVersion = SSLv3
 
 ; Some security enhancements for UNIX systems - comment them out on Win32
-chroot = /var/lib/stunnel4/
-setuid = stunnel4
-setgid = stunnel4
+chroot = {{ opts.chroot }}
+setuid = {{ opts.user }}
+setgid = {{ opts.group }}
 
 ; PID is created inside the chroot jail
-pid = {{ pidfile }}
+pid = {{ opts.chroot_pidfile }}
+
+debug = {{ opts.loglevel }}
+output = {{ opts.logfile }}
 
 ; Some performance tunings
 socket = l:TCP_NODELAY=1
 socket = r:TCP_NODELAY=1
 
 ; Service-level configuration
-{% for b in backend %}
+{% for b in backends %}
 [{{ b.name }}]
 accept  = {{ b.accept }}
 connect = {{ b.connect }}

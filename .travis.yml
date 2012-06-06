@@ -10,6 +10,8 @@ install:
 
 script:
   - ./bin/test
+  - cat parts/stunnel/stunnel.conf
   - sudo ./bin/stunnel start
   - sudo ./bin/stunnel stop
+  - cat /var/log/stunnel4/stunnel.log
 

@@ -23,7 +23,7 @@ setup(
     packages = find_packages(exclude=['ez_setup']),
     package_data = {
         '': ['README.rst', 'CHANGES.txt'],
-        'isotoma.recipe.stunnel': ['stunnel.conf']
+        'isotoma.recipe.stunnel.templates': ['stunnel.conf.j2']
     },
     namespace_packages = ['isotoma', 'isotoma.recipe'],
     include_package_data = True,
@@ -33,6 +33,7 @@ setup(
         'zc.buildout',
         'Jinja2',
         'isotoma.recipe.gocaptain',
+        'missingbits',
     ],
     entry_points = {
         "zc.buildout": [

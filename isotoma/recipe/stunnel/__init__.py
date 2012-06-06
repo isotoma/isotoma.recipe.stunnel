@@ -1,4 +1,4 @@
-# Copyright 2010 Isotoma Limited
+# Copyright 2012 Isotoma Limited
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ import logging
 import os
 import zc.buildout
 from isotoma.recipe import gocaptain
-import Jinja2
+import jinja2
 import missingbits
 
 try:
@@ -29,7 +29,7 @@ except ImportError:
 def sibpath(filename):
     return os.path.join(os.path.dirname(__file__), filename)
 
-class Pound(object):
+class Stunnel(object):
 
     def __init__(self, buildout, name, options):
         self.name = name
@@ -39,7 +39,7 @@ class Pound(object):
 
         self.cfgfile = os.path.join(self.outputdir, "stunnel.conf")
 
-        self.options.setdefault('executable', '/usr/sbin/stunnel4')
+        self.options.setdefault('executable', '/usr/bin/stunnel4')
 
         # Logging options
         self.options.setdefault('loglevel', "2")
@@ -57,7 +57,11 @@ class Pound(object):
         self.options.setdefault('user', 'stunnel4')
         self.options.setdefault('group', 'stunnel4')
         self.options.setdefault('chroot', os.path.dirname(self.options['pidfile']))
-        self.options.setdefault('chroot_pidfile', os.path.relpath(options['pidfile'], options['chroot'])
+
+        if options["chroot"]:
+            self.options.setdefault('chroot_pidfile', "/" + os.path.relpath(options['pidfile'], options['chroot']))
+        else:
+            self.options.setdefault("chroot_pidfile", self.options["pidfile"])
 
     def install(self):
         if not os.path.exists(self.options['chroot']):
