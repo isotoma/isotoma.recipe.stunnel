@@ -1,0 +1,15 @@
+language: python
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install -y -q stunnel
+
+install:
+  - python bootstrap.py
+  - ./bin/buildout
+
+script:
+  - ./bin/test
+  - sudo ./bin/stunnel start
+  - sudo ./bin/stunnel stop
+
